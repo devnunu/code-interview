@@ -1,3 +1,90 @@
+**Table of Contents**
+
+- [체크리스트](#%EC%B2%B4%ED%81%AC%EB%A6%AC%EC%8A%A4%ED%8A%B8)
+    - [자바스크립트 scope를 var키워드를 기준으로 설명할수 있다.](#%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8-scope%EB%A5%BC-var%ED%82%A4%EC%9B%8C%EB%93%9C%EB%A5%BC-%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C-%EC%84%A4%EB%AA%85%ED%95%A0%EC%88%98-%EC%9E%88%EB%8B%A4)
+        - [[예제 1] 함수 단위의 유효 범위](#%EC%98%88%EC%A0%9C-1-%ED%95%A8%EC%88%98-%EB%8B%A8%EC%9C%84%EC%9D%98-%EC%9C%A0%ED%9A%A8-%EB%B2%94%EC%9C%84)
+        - [[예제 2] 변수명의 중복 허용](#%EC%98%88%EC%A0%9C-2-%EB%B3%80%EC%88%98%EB%AA%85%EC%9D%98-%EC%A4%91%EB%B3%B5-%ED%97%88%EC%9A%A9)
+        - [[예제 3] var 키워드의 생략](#%EC%98%88%EC%A0%9C-3-var-%ED%82%A4%EC%9B%8C%EB%93%9C%EC%9D%98-%EC%83%9D%EB%9E%B5)
+        - [[예제 4] 렉시컬 특성](#%EC%98%88%EC%A0%9C-4-%EB%A0%89%EC%8B%9C%EC%BB%AC-%ED%8A%B9%EC%84%B1)
+    - [closure 는 언제 형성되는지? 경험한 코드가 있으면 코드로 보여주기.](#closure-%EB%8A%94-%EC%96%B8%EC%A0%9C-%ED%98%95%EC%84%B1%EB%90%98%EB%8A%94%EC%A7%80-%EA%B2%BD%ED%97%98%ED%95%9C-%EC%BD%94%EB%93%9C%EA%B0%80-%EC%9E%88%EC%9C%BC%EB%A9%B4-%EC%BD%94%EB%93%9C%EB%A1%9C-%EB%B3%B4%EC%97%AC%EC%A3%BC%EA%B8%B0)
+        - [[예제 1] 내부 변수 참조 값 접근](#%EC%98%88%EC%A0%9C-1-%EB%82%B4%EB%B6%80-%EB%B3%80%EC%88%98-%EC%B0%B8%EC%A1%B0-%EA%B0%92-%EC%A0%91%EA%B7%BC)
+        - [[예제 2] 다른 객체로 내부 변수 참조](#%EC%98%88%EC%A0%9C-2-%EB%8B%A4%EB%A5%B8-%EA%B0%9D%EC%B2%B4%EB%A1%9C-%EB%82%B4%EB%B6%80-%EB%B3%80%EC%88%98-%EC%B0%B8%EC%A1%B0)
+        - [클로저의 사용이유](#%ED%81%B4%EB%A1%9C%EC%A0%80%EC%9D%98-%EC%82%AC%EC%9A%A9%EC%9D%B4%EC%9C%A0)
+    - [const는 언제 사용해야 하는지?](#const%EB%8A%94-%EC%96%B8%EC%A0%9C-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%95%BC-%ED%95%98%EB%8A%94%EC%A7%80)
+        - [let](#let)
+        - [const](#const)
+    - [mvc방식으로 개발한 사례가 있다면 본인이 느끼는 장단점을 설명하기.](#mvc%EB%B0%A9%EC%8B%9D%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EB%B0%9C%ED%95%9C-%EC%82%AC%EB%A1%80%EA%B0%80-%EC%9E%88%EB%8B%A4%EB%A9%B4-%EB%B3%B8%EC%9D%B8%EC%9D%B4-%EB%8A%90%EB%81%BC%EB%8A%94-%EC%9E%A5%EB%8B%A8%EC%A0%90%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%98%EA%B8%B0)
+    - [크롬개발자도구에서 js디버깅을 하는 방식을 설명해보기.](#%ED%81%AC%EB%A1%AC%EA%B0%9C%EB%B0%9C%EC%9E%90%EB%8F%84%EA%B5%AC%EC%97%90%EC%84%9C-js%EB%94%94%EB%B2%84%EA%B9%85%EC%9D%84-%ED%95%98%EB%8A%94-%EB%B0%A9%EC%8B%9D%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%B4%EB%B3%B4%EA%B8%B0)
+    - [비동기 콜백함수와 스택간의 관계를 어떻게 설명할 수 있는지?](#%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%BD%9C%EB%B0%B1%ED%95%A8%EC%88%98%EC%99%80-%EC%8A%A4%ED%83%9D%EA%B0%84%EC%9D%98-%EA%B4%80%EA%B3%84%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%84%A4%EB%AA%85%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94%EC%A7%80)
+    - [DOM 조작과정에서 성능에 좋지 않은 방식과 좋은 사례는 어떤 것들이 있는지?](#dom-%EC%A1%B0%EC%9E%91%EA%B3%BC%EC%A0%95%EC%97%90%EC%84%9C-%EC%84%B1%EB%8A%A5%EC%97%90-%EC%A2%8B%EC%A7%80-%EC%95%8A%EC%9D%80-%EB%B0%A9%EC%8B%9D%EA%B3%BC-%EC%A2%8B%EC%9D%80-%EC%82%AC%EB%A1%80%EB%8A%94-%EC%96%B4%EB%96%A4-%EA%B2%83%EB%93%A4%EC%9D%B4-%EC%9E%88%EB%8A%94%EC%A7%80)
+        - [좋지 않은 예](#%EC%A2%8B%EC%A7%80-%EC%95%8A%EC%9D%80-%EC%98%88)
+        - [좋은 예](#%EC%A2%8B%EC%9D%80-%EC%98%88)
+    - [배열에서 제공하는 메서드 중에 filter와 map의 활용경험은?](#%EB%B0%B0%EC%97%B4%EC%97%90%EC%84%9C-%EC%A0%9C%EA%B3%B5%ED%95%98%EB%8A%94-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%A4%91%EC%97%90-filter%EC%99%80-map%EC%9D%98-%ED%99%9C%EC%9A%A9%EA%B2%BD%ED%97%98%EC%9D%80)
+    - [prototype 이 가진 장점은 무엇인가?](#prototype-%EC%9D%B4-%EA%B0%80%EC%A7%84-%EC%9E%A5%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [prototype 을 통해 객체를 만드는 방법에 대해서 설명하기.](#prototype-%EC%9D%84-%ED%86%B5%ED%95%B4-%EA%B0%9D%EC%B2%B4%EB%A5%BC-%EB%A7%8C%EB%93%9C%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%84%A4%EB%AA%85%ED%95%98%EA%B8%B0)
+    - [es6에서 본인이 생각할때 지난번대비 개선된 점은 무엇이고, 왜 그렇게 생각하는지?](#es6%EC%97%90%EC%84%9C-%EB%B3%B8%EC%9D%B8%EC%9D%B4-%EC%83%9D%EA%B0%81%ED%95%A0%EB%95%8C-%EC%A7%80%EB%82%9C%EB%B2%88%EB%8C%80%EB%B9%84-%EA%B0%9C%EC%84%A0%EB%90%9C-%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B4%EA%B3%A0-%EC%99%9C-%EA%B7%B8%EB%A0%87%EA%B2%8C-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EC%A7%80)
+    - [event delegation의 원리는 무엇인지? 적용한 경험이 있다면 어떤기능이였는지?](#event-delegation%EC%9D%98-%EC%9B%90%EB%A6%AC%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%B8%EC%A7%80-%EC%A0%81%EC%9A%A9%ED%95%9C-%EA%B2%BD%ED%97%98%EC%9D%B4-%EC%9E%88%EB%8B%A4%EB%A9%B4-%EC%96%B4%EB%96%A4%EA%B8%B0%EB%8A%A5%EC%9D%B4%EC%98%80%EB%8A%94%EC%A7%80)
+    - [좋은 코드를 만들기 위해서 노력한 경험들은 무엇인지?](#%EC%A2%8B%EC%9D%80-%EC%BD%94%EB%93%9C%EB%A5%BC-%EB%A7%8C%EB%93%A4%EA%B8%B0-%EC%9C%84%ED%95%B4%EC%84%9C-%EB%85%B8%EB%A0%A5%ED%95%9C-%EA%B2%BD%ED%97%98%EB%93%A4%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EC%A7%80)
+    - [전역변수를 없앨 수 있는 방법들은 무엇인가?](#%EC%A0%84%EC%97%AD%EB%B3%80%EC%88%98%EB%A5%BC-%EC%97%86%EC%95%A8-%EC%88%98-%EC%9E%88%EB%8A%94-%EB%B0%A9%EB%B2%95%EB%93%A4%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [이벤트를 거쳐 API를 통해 dom조작까지 이어지는 과정을 순서대로 설명해보라.](#%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EA%B1%B0%EC%B3%90-api%EB%A5%BC-%ED%86%B5%ED%95%B4-dom%EC%A1%B0%EC%9E%91%EA%B9%8C%EC%A7%80-%EC%9D%B4%EC%96%B4%EC%A7%80%EB%8A%94-%EA%B3%BC%EC%A0%95%EC%9D%84-%EC%88%9C%EC%84%9C%EB%8C%80%EB%A1%9C-%EC%84%A4%EB%AA%85%ED%95%B4%EB%B3%B4%EB%9D%BC)
+    - [setTimeout을 이용해 재귀호출을 하는 경우 어떤 장점이 있는가?](#settimeout%EC%9D%84-%EC%9D%B4%EC%9A%A9%ED%95%B4-%EC%9E%AC%EA%B7%80%ED%98%B8%EC%B6%9C%EC%9D%84-%ED%95%98%EB%8A%94-%EA%B2%BD%EC%9A%B0-%EC%96%B4%EB%96%A4-%EC%9E%A5%EC%A0%90%EC%9D%B4-%EC%9E%88%EB%8A%94%EA%B0%80)
+    - [문제가 있을때 본인이 가장 자주 사용하는 디버깅 과정은 무엇인가?](#%EB%AC%B8%EC%A0%9C%EA%B0%80-%EC%9E%88%EC%9D%84%EB%95%8C-%EB%B3%B8%EC%9D%B8%EC%9D%B4-%EA%B0%80%EC%9E%A5-%EC%9E%90%EC%A3%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EB%94%94%EB%B2%84%EA%B9%85-%EA%B3%BC%EC%A0%95%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [github을 통해서 협업과정을 거치는 과정을 branch를 중심으로 설명하기.](#github%EC%9D%84-%ED%86%B5%ED%95%B4%EC%84%9C-%ED%98%91%EC%97%85%EA%B3%BC%EC%A0%95%EC%9D%84-%EA%B1%B0%EC%B9%98%EB%8A%94-%EA%B3%BC%EC%A0%95%EC%9D%84-branch%EB%A5%BC-%EC%A4%91%EC%8B%AC%EC%9C%BC%EB%A1%9C-%EC%84%A4%EB%AA%85%ED%95%98%EA%B8%B0)
+    - [jQuery를 사용하는 것의 장점과 단점은 무엇이라고 생각하는지.](#jquery%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94-%EA%B2%83%EC%9D%98-%EC%9E%A5%EC%A0%90%EA%B3%BC-%EB%8B%A8%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B4%EB%9D%BC%EA%B3%A0-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EC%A7%80)
+    - [정규표현식으로 email을 체크해보기.](#%EC%A0%95%EA%B7%9C%ED%91%9C%ED%98%84%EC%8B%9D%EC%9C%BC%EB%A1%9C-email%EC%9D%84-%EC%B2%B4%ED%81%AC%ED%95%B4%EB%B3%B4%EA%B8%B0)
+    - [요즘 관심있게 지켜보는 라이브러리나 오픈소스가 있다면 무엇인지? 어떤점이 마음에 드는지?](#%EC%9A%94%EC%A6%98-%EA%B4%80%EC%8B%AC%EC%9E%88%EA%B2%8C-%EC%A7%80%EC%BC%9C%EB%B3%B4%EB%8A%94-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC%EB%82%98-%EC%98%A4%ED%94%88%EC%86%8C%EC%8A%A4%EA%B0%80-%EC%9E%88%EB%8B%A4%EB%A9%B4-%EB%AC%B4%EC%97%87%EC%9D%B8%EC%A7%80-%EC%96%B4%EB%96%A4%EC%A0%90%EC%9D%B4-%EB%A7%88%EC%9D%8C%EC%97%90-%EB%93%9C%EB%8A%94%EC%A7%80)
+    - [서비스 성능개선을 했던 사례를 말해보자.](#%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%84%B1%EB%8A%A5%EA%B0%9C%EC%84%A0%EC%9D%84-%ED%96%88%EB%8D%98-%EC%82%AC%EB%A1%80%EB%A5%BC-%EB%A7%90%ED%95%B4%EB%B3%B4%EC%9E%90)
+    - [this 에 대해서 설명하기.](#this-%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%84%A4%EB%AA%85%ED%95%98%EA%B8%B0)
+    - [this를 변경시킬 수 있는 방법을 코드로 예시로 보여주기.](#this%EB%A5%BC-%EB%B3%80%EA%B2%BD%EC%8B%9C%ED%82%AC-%EC%88%98-%EC%9E%88%EB%8A%94-%EB%B0%A9%EB%B2%95%EC%9D%84-%EC%BD%94%EB%93%9C%EB%A1%9C-%EC%98%88%EC%8B%9C%EB%A1%9C-%EB%B3%B4%EC%97%AC%EC%A3%BC%EA%B8%B0)
+        - [[예제 1]](#%EC%98%88%EC%A0%9C-1)
+        - [[예제 2]](#%EC%98%88%EC%A0%9C-2)
+    - [bind 메서드의 내부 코드는 어떻게 됐을까?](#bind-%EB%A9%94%EC%84%9C%EB%93%9C%EC%9D%98-%EB%82%B4%EB%B6%80-%EC%BD%94%EB%93%9C%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%90%90%EC%9D%84%EA%B9%8C)
+    - [IE9 지원이 필요하지만, ie9 에서 제공하지 않는 최신 javascript API를 사용하고 싶을때, 어떻게 대처할 것인가?](#ie9-%EC%A7%80%EC%9B%90%EC%9D%B4-%ED%95%84%EC%9A%94%ED%95%98%EC%A7%80%EB%A7%8C-ie9-%EC%97%90%EC%84%9C-%EC%A0%9C%EA%B3%B5%ED%95%98%EC%A7%80-%EC%95%8A%EB%8A%94-%EC%B5%9C%EC%8B%A0-javascript-api%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%9D%84%EB%95%8C-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8C%80%EC%B2%98%ED%95%A0-%EA%B2%83%EC%9D%B8%EA%B0%80)
+    - [팀장님이 내가 전혀 모르는 기능에 대한 개발을 부탁하면 어떻게 대응할 것인가?](#%ED%8C%80%EC%9E%A5%EB%8B%98%EC%9D%B4-%EB%82%B4%EA%B0%80-%EC%A0%84%ED%98%80-%EB%AA%A8%EB%A5%B4%EB%8A%94-%EA%B8%B0%EB%8A%A5%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B0%9C%EB%B0%9C%EC%9D%84-%EB%B6%80%ED%83%81%ED%95%98%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8C%80%EC%9D%91%ED%95%A0-%EA%B2%83%EC%9D%B8%EA%B0%80)
+    - [모듈패턴은 어떻게 구현할수 있는지? 모듈패턴의 어떤 장점이 있는지?](#%EB%AA%A8%EB%93%88%ED%8C%A8%ED%84%B4%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%A0%EC%88%98-%EC%9E%88%EB%8A%94%EC%A7%80-%EB%AA%A8%EB%93%88%ED%8C%A8%ED%84%B4%EC%9D%98-%EC%96%B4%EB%96%A4-%EC%9E%A5%EC%A0%90%EC%9D%B4-%EC%9E%88%EB%8A%94%EC%A7%80)
+    - [javascript 코드를 html하단에 주로 배치하는 이유는 ?](#javascript-%EC%BD%94%EB%93%9C%EB%A5%BC-html%ED%95%98%EB%8B%A8%EC%97%90-%EC%A3%BC%EB%A1%9C-%EB%B0%B0%EC%B9%98%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EB%8A%94-)
+    - [javascript 코드를 여러개 html에 추가하는 것과, 하나로 머지하여 배포하는 것의 장단점은 무엇인가?](#javascript-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%97%AC%EB%9F%AC%EA%B0%9C-html%EC%97%90-%EC%B6%94%EA%B0%80%ED%95%98%EB%8A%94-%EA%B2%83%EA%B3%BC-%ED%95%98%EB%82%98%EB%A1%9C-%EB%A8%B8%EC%A7%80%ED%95%98%EC%97%AC-%EB%B0%B0%ED%8F%AC%ED%95%98%EB%8A%94-%EA%B2%83%EC%9D%98-%EC%9E%A5%EB%8B%A8%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [html을 내려받으면서 브라우저가 화면에 모든것을 표현하기까지의 전체 렌더링 과정을 설명해보자.](#html%EC%9D%84-%EB%82%B4%EB%A0%A4%EB%B0%9B%EC%9C%BC%EB%A9%B4%EC%84%9C-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EA%B0%80-%ED%99%94%EB%A9%B4%EC%97%90-%EB%AA%A8%EB%93%A0%EA%B2%83%EC%9D%84-%ED%91%9C%ED%98%84%ED%95%98%EA%B8%B0%EA%B9%8C%EC%A7%80%EC%9D%98-%EC%A0%84%EC%B2%B4-%EB%A0%8C%EB%8D%94%EB%A7%81-%EA%B3%BC%EC%A0%95%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%B4%EB%B3%B4%EC%9E%90)
+    - [ecmascript란 무엇인가?](#ecmascript%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [코드리뷰를 했던 사례를 말해보라. 어떤점을 느꼈는가?](#%EC%BD%94%EB%93%9C%EB%A6%AC%EB%B7%B0%EB%A5%BC-%ED%96%88%EB%8D%98-%EC%82%AC%EB%A1%80%EB%A5%BC-%EB%A7%90%ED%95%B4%EB%B3%B4%EB%9D%BC-%EC%96%B4%EB%96%A4%EC%A0%90%EC%9D%84-%EB%8A%90%EA%BC%88%EB%8A%94%EA%B0%80)
+    - [DOM Tree란 무엇인가?](#dom-tree%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [innerHTML을 직접 구현하면 어떻게 구현해야 할까?](#innerhtml%EC%9D%84-%EC%A7%81%EC%A0%91-%EA%B5%AC%ED%98%84%ED%95%98%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%B4%EC%95%BC-%ED%95%A0%EA%B9%8C)
+    - [유니크한 데이터를 집합으로 가지는 set을 array 로 구현하면 어떻게 구현할 수 있을까?](#%EC%9C%A0%EB%8B%88%ED%81%AC%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EC%A7%91%ED%95%A9%EC%9C%BC%EB%A1%9C-%EA%B0%80%EC%A7%80%EB%8A%94-set%EC%9D%84-array-%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C)
+    - [touch 이벤트와 mouse이벤트의 차이점은 무엇인가?](#touch-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EC%99%80-mouse%EC%9D%B4%EB%B2%A4%ED%8A%B8%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+    - [preventDefault는 언제 쓸 수 있는 것인지?](#preventdefault%EB%8A%94-%EC%96%B8%EC%A0%9C-%EC%93%B8-%EC%88%98-%EC%9E%88%EB%8A%94-%EA%B2%83%EC%9D%B8%EC%A7%80)
+    - [버블링과 캡처링을 설명하세요.](#%EB%B2%84%EB%B8%94%EB%A7%81%EA%B3%BC-%EC%BA%A1%EC%B2%98%EB%A7%81%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+    - [배포나 릴리즈 전에 코드를 어떻게 테스트 할 수 있는지? 좋은 사례나, 경험을 말해보기.](#%EB%B0%B0%ED%8F%AC%EB%82%98-%EB%A6%B4%EB%A6%AC%EC%A6%88-%EC%A0%84%EC%97%90-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%85%8C%EC%8A%A4%ED%8A%B8-%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8A%94%EC%A7%80-%EC%A2%8B%EC%9D%80-%EC%82%AC%EB%A1%80%EB%82%98-%EA%B2%BD%ED%97%98%EC%9D%84-%EB%A7%90%ED%95%B4%EB%B3%B4%EA%B8%B0)
+    - [콜백함수란 무엇인지 설명하기.](#%EC%BD%9C%EB%B0%B1%ED%95%A8%EC%88%98%EB%9E%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EC%A7%80-%EC%84%A4%EB%AA%85%ED%95%98%EA%B8%B0)
+    - [template 을 어떻게 관리하는 게 좋다고 생각하는지 ?](#template-%EC%9D%84-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B4%80%EB%A6%AC%ED%95%98%EB%8A%94-%EA%B2%8C-%EC%A2%8B%EB%8B%A4%EA%B3%A0-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EC%A7%80-)
+    - [자바스크립트에서 빌드는 어떤 것을 하는 것일까? 사용해본 도구가 있는지?](#%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%97%90%EC%84%9C-%EB%B9%8C%EB%93%9C%EB%8A%94-%EC%96%B4%EB%96%A4-%EA%B2%83%EC%9D%84-%ED%95%98%EB%8A%94-%EA%B2%83%EC%9D%BC%EA%B9%8C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B8-%EB%8F%84%EA%B5%AC%EA%B0%80-%EC%9E%88%EB%8A%94%EC%A7%80)
+    - [팀프로젝트에서 제일 중요한 부분은 무엇이라고 생각하는가?](#%ED%8C%80%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%EC%97%90%EC%84%9C-%EC%A0%9C%EC%9D%BC-%EC%A4%91%EC%9A%94%ED%95%9C-%EB%B6%80%EB%B6%84%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B4%EB%9D%BC%EA%B3%A0-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EA%B0%80)
+    - [커뮤니케이션을 잘하기 위해서 어떤 방법을 해보았는가?](#%EC%BB%A4%EB%AE%A4%EB%8B%88%EC%BC%80%EC%9D%B4%EC%85%98%EC%9D%84-%EC%9E%98%ED%95%98%EA%B8%B0-%EC%9C%84%ED%95%B4%EC%84%9C-%EC%96%B4%EB%96%A4-%EB%B0%A9%EB%B2%95%EC%9D%84-%ED%95%B4%EB%B3%B4%EC%95%98%EB%8A%94%EA%B0%80)
+    - [커밋로그가 가진 의미는 어떤것일까? 어떤 규칙이 좋다고 생각하는지?](#%EC%BB%A4%EB%B0%8B%EB%A1%9C%EA%B7%B8%EA%B0%80-%EA%B0%80%EC%A7%84-%EC%9D%98%EB%AF%B8%EB%8A%94-%EC%96%B4%EB%96%A4%EA%B2%83%EC%9D%BC%EA%B9%8C-%EC%96%B4%EB%96%A4-%EA%B7%9C%EC%B9%99%EC%9D%B4-%EC%A2%8B%EB%8B%A4%EA%B3%A0-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EC%A7%80)
+    - [less , sass를 써보았는가? 그것이 가진 장점은 무엇인지? 왜 그런것이 나왔다고 생각하는지?](#less--sass%EB%A5%BC-%EC%8D%A8%EB%B3%B4%EC%95%98%EB%8A%94%EA%B0%80-%EA%B7%B8%EA%B2%83%EC%9D%B4-%EA%B0%80%EC%A7%84-%EC%9E%A5%EC%A0%90%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%B8%EC%A7%80-%EC%99%9C-%EA%B7%B8%EB%9F%B0%EA%B2%83%EC%9D%B4-%EB%82%98%EC%99%94%EB%8B%A4%EA%B3%A0-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94%EC%A7%80)
+    - [feature detection에 대해서 설명하시요.](#feature-detection%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%84%A4%EB%AA%85%ED%95%98%EC%8B%9C%EC%9A%94)
+    - [모바일웹의 애니메이션 구현에 대한 경험과 가장 좋은 방식을 말해보세요.](#%EB%AA%A8%EB%B0%94%EC%9D%BC%EC%9B%B9%EC%9D%98-%EC%95%A0%EB%8B%88%EB%A9%94%EC%9D%B4%EC%85%98-%EA%B5%AC%ED%98%84%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B2%BD%ED%97%98%EA%B3%BC-%EA%B0%80%EC%9E%A5-%EC%A2%8B%EC%9D%80-%EB%B0%A9%EC%8B%9D%EC%9D%84-%EB%A7%90%ED%95%B4%EB%B3%B4%EC%84%B8%EC%9A%94)
+    - [웹화면에 가운데 정렬이 되는 모달다이얼로그를 어떻게 구현할 수 있을까?](#%EC%9B%B9%ED%99%94%EB%A9%B4%EC%97%90-%EA%B0%80%EC%9A%B4%EB%8D%B0-%EC%A0%95%EB%A0%AC%EC%9D%B4-%EB%90%98%EB%8A%94-%EB%AA%A8%EB%8B%AC%EB%8B%A4%EC%9D%B4%EC%96%BC%EB%A1%9C%EA%B7%B8%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C)
+    - [검색자동완성을 위한 수도코드를 작성해보세요.](#%EA%B2%80%EC%83%89%EC%9E%90%EB%8F%99%EC%99%84%EC%84%B1%EC%9D%84-%EC%9C%84%ED%95%9C-%EC%88%98%EB%8F%84%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%9E%91%EC%84%B1%ED%95%B4%EB%B3%B4%EC%84%B8%EC%9A%94)
+    - [merge 과정에서 생기는 충돌을 해결하는 과정을 설명하세요.](#merge-%EA%B3%BC%EC%A0%95%EC%97%90%EC%84%9C-%EC%83%9D%EA%B8%B0%EB%8A%94-%EC%B6%A9%EB%8F%8C%EC%9D%84-%ED%95%B4%EA%B2%B0%ED%95%98%EB%8A%94-%EA%B3%BC%EC%A0%95%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+    - [REST API는 무엇인가?](#rest-api%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80)
+        - [리소스](#%EB%A6%AC%EC%86%8C%EC%8A%A4)
+        - [메서드](#%EB%A9%94%EC%84%9C%EB%93%9C)
+    - [post와 get의 차이점을 설명하세요.](#post%EC%99%80-get%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%9D%84-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+    - [http header는 무엇인가요?](#http-header%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94)
+    - [javascript의 call stack에 대해서 설명하세요.](#javascript%EC%9D%98-call-stack%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+    - [비동기 함수안에 비동기 로직이 또 있을때 이를 어떻게 보기 좋게 해결할 수 있을지 사례와 원리를 설명하세요.](#%EB%B9%84%EB%8F%99%EA%B8%B0-%ED%95%A8%EC%88%98%EC%95%88%EC%97%90-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A1%9C%EC%A7%81%EC%9D%B4-%EB%98%90-%EC%9E%88%EC%9D%84%EB%95%8C-%EC%9D%B4%EB%A5%BC-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%B3%B4%EA%B8%B0-%EC%A2%8B%EA%B2%8C-%ED%95%B4%EA%B2%B0%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EC%A7%80-%EC%82%AC%EB%A1%80%EC%99%80-%EC%9B%90%EB%A6%AC%EB%A5%BC-%EC%84%A4%EB%AA%85%ED%95%98%EC%84%B8%EC%9A%94)
+        - [[promise 선언부]](#promise-%EC%84%A0%EC%96%B8%EB%B6%80)
+        - [[promise 실행부]](#promise-%EC%8B%A4%ED%96%89%EB%B6%80)
+        - [[promise 에러처리]](#promise-%EC%97%90%EB%9F%AC%EC%B2%98%EB%A6%AC)
+    - [네임스페이스 패턴의 장점은?](#%EB%84%A4%EC%9E%84%EC%8A%A4%ED%8E%98%EC%9D%B4%EC%8A%A4-%ED%8C%A8%ED%84%B4%EC%9D%98-%EC%9E%A5%EC%A0%90%EC%9D%80)
+    - [react, vue, angular라이브러리 중 하나를 골라야할때 어떤식으로 고를 예정인가요?](#react-vue-angular%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%A4%91-%ED%95%98%EB%82%98%EB%A5%BC-%EA%B3%A8%EB%9D%BC%EC%95%BC%ED%95%A0%EB%95%8C-%EC%96%B4%EB%96%A4%EC%8B%9D%EC%9C%BC%EB%A1%9C-%EA%B3%A0%EB%A5%BC-%EC%98%88%EC%A0%95%EC%9D%B8%EA%B0%80%EC%9A%94)
+    - [개발시 어려움이 많거나 풀리지 않을경우 어떤 해결방법을 사용하는가?](#%EA%B0%9C%EB%B0%9C%EC%8B%9C-%EC%96%B4%EB%A0%A4%EC%9B%80%EC%9D%B4-%EB%A7%8E%EA%B1%B0%EB%82%98-%ED%92%80%EB%A6%AC%EC%A7%80-%EC%95%8A%EC%9D%84%EA%B2%BD%EC%9A%B0-%EC%96%B4%EB%96%A4-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%EA%B0%80)
+    - [배워나가는 기술을 공유하거나 기록하는 것들이 있는지?](#%EB%B0%B0%EC%9B%8C%EB%82%98%EA%B0%80%EB%8A%94-%EA%B8%B0%EC%88%A0%EC%9D%84-%EA%B3%B5%EC%9C%A0%ED%95%98%EA%B1%B0%EB%82%98-%EA%B8%B0%EB%A1%9D%ED%95%98%EB%8A%94-%EA%B2%83%EB%93%A4%EC%9D%B4-%EC%9E%88%EB%8A%94%EC%A7%80)
+    - [본인이 생각하는 가장 적절한 커밋단위는 ?](#%EB%B3%B8%EC%9D%B8%EC%9D%B4-%EC%83%9D%EA%B0%81%ED%95%98%EB%8A%94-%EA%B0%80%EC%9E%A5-%EC%A0%81%EC%A0%88%ED%95%9C-%EC%BB%A4%EB%B0%8B%EB%8B%A8%EC%9C%84%EB%8A%94-)
+    - [디자이너와 기획자가 구현이 불가능할 것으로 예상되는 기능개발을 요구할때 대처방법은?](#%EB%94%94%EC%9E%90%EC%9D%B4%EB%84%88%EC%99%80-%EA%B8%B0%ED%9A%8D%EC%9E%90%EA%B0%80-%EA%B5%AC%ED%98%84%EC%9D%B4-%EB%B6%88%EA%B0%80%EB%8A%A5%ED%95%A0-%EA%B2%83%EC%9C%BC%EB%A1%9C-%EC%98%88%EC%83%81%EB%90%98%EB%8A%94-%EA%B8%B0%EB%8A%A5%EA%B0%9C%EB%B0%9C%EC%9D%84-%EC%9A%94%EA%B5%AC%ED%95%A0%EB%95%8C-%EB%8C%80%EC%B2%98%EB%B0%A9%EB%B2%95%EC%9D%80)
+    - [front-end 개발자의 역할은 어디까지 일까?](#front-end-%EA%B0%9C%EB%B0%9C%EC%9E%90%EC%9D%98-%EC%97%AD%ED%95%A0%EC%9D%80-%EC%96%B4%EB%94%94%EA%B9%8C%EC%A7%80-%EC%9D%BC%EA%B9%8C)
+    - [nodeJS의 설치방법과 모듈화를 통한 웹서버 라우팅을 구현할 수 있다.](#nodejs%EC%9D%98-%EC%84%A4%EC%B9%98%EB%B0%A9%EB%B2%95%EA%B3%BC-%EB%AA%A8%EB%93%88%ED%99%94%EB%A5%BC-%ED%86%B5%ED%95%9C-%EC%9B%B9%EC%84%9C%EB%B2%84-%EB%9D%BC%EC%9A%B0%ED%8C%85%EC%9D%84-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8B%A4)
+
 # 체크리스트
 
 ### 자바스크립트 scope를 var키워드를 기준으로 설명할수 있다.
@@ -185,11 +272,13 @@ const는 타 언어에서 상수로 사용되는 변수 타입이다. 실제로 
 ### mvc방식으로 개발한 사례가 있다면 본인이 느끼는 장단점을 설명하기.
 
 ```
+
 ```
 ---
 ### 크롬개발자도구에서 js디버깅을 하는 방식을 설명해보기.
 
 ```
+
 ```
 
 ---
@@ -459,7 +548,7 @@ testModule.resetCounter(); //"counter value prior to reset: 6"
 - 예정 키워드(Reserved Word)
 - 연산자(Operator)
 - 객체(Object)
-등을 규정짓는다. 이는 어떤 ECMA 스크립트 호스트 환경에서든 동일하다.
+  등을 규정짓는다. 이는 어떤 ECMA 스크립트 호스트 환경에서든 동일하다.
 
 ---
 ### 코드리뷰를 했던 사례를 말해보라. 어떤점을 느꼈는가?
@@ -490,8 +579,8 @@ indexOf 함수로 해당 데이터를 검색한 후 배열 내부에 데이터�
 ### 버블링과 캡처링을 설명하세요.
 - 버블링 : 자식 노드에서 발생한 이벤트가 부모 노드로 전달된다.
 - 캡쳐링 : 부모 노드에서 발생한 이벤트가 자식 노드로 전달된다.
-버블링과 캡쳐링은 addEventListener의 세번째 인자로 설정할수 있으며 버블링은 (false) 캡쳐링은 (ture)가 된다.
-stoppropagation 함수를 이용하면 버블링과 캡쳐링을 차단할 수있다.
+  버블링과 캡쳐링은 addEventListener의 세번째 인자로 설정할수 있으며 버블링은 (false) 캡쳐링은 (ture)가 된다.
+  stoppropagation 함수를 이용하면 버블링과 캡쳐링을 차단할 수있다.
 
 ---
 ### 배포나 릴리즈 전에 코드를 어떻게 테스트 할 수 있는지? 좋은 사례나, 경험을 말해보기.
@@ -691,9 +780,9 @@ _promise(true)
 4. google 검색을 통해 해당 기술에 대해 찾아본다.
 5. 관련 기술을 주제로한 도서를 찾아본다.
 6. 다음에 같은 기능을 구현할 경우가 있으므로 기록으로 남겨둔다.
-이와 같은 프로세스로 진행하게 된다면 어려움없이 진행되는 경우가 많다.
-그럼에도 불구하고 잘 풀리지 않을경우 우선 해당 기능의 우선순위를 뒤로 미루어놓고 다른 기능을 먼저 구현한다.
-그리고 다시 돌아왔을 때 잘 풀리는 경우가 많다.
+   이와 같은 프로세스로 진행하게 된다면 어려움없이 진행되는 경우가 많다.
+   그럼에도 불구하고 잘 풀리지 않을경우 우선 해당 기능의 우선순위를 뒤로 미루어놓고 다른 기능을 먼저 구현한다.
+   그리고 다시 돌아왔을 때 잘 풀리는 경우가 많다.
 
 ---
 ### 배워나가는 기술을 공유하거나 기록하는 것들이 있는지?
